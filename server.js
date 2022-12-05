@@ -2,8 +2,8 @@ import dgram from 'node:dgram'
 import ip from 'ip'
 const server = dgram.createSocket('udp4')
 
-export const senderAdress = ip.address()
-export const udpSenderPort =process.env.PORT || 8080
+import { senderAdress } from './client.js'
+import { udpSenderPort } from './client.js'
 
 
 // https://habr.com/ru/post/519982/
@@ -18,17 +18,19 @@ server.on('error', (err) => {
     server.close();
 });
 
-
-server.on ('message', (msg, rinfo) => {
-    // let msgN = JSON.parse(msg)
-    // msgN = obj.num
-    console.log(`I got message ${msg.toString()}`)// SDELAT HSON PARSE 60 & STRING poluchaem
-    console.log(msg.toString());
-})
-
 server.on('listening', () => {
     const address = server.address();
     console.log(`server listening ${senderAdress} on port: ${address.port}`);
   });
 
-server.bind(udpSenderPort)
+     server.on ('message', (msg, rinfo) => {
+        console.log(msg.toString());
+        })
+
+
+
+server.on('close', ()=> {
+
+})
+server.bind()
+
